@@ -1,11 +1,25 @@
 package SpaceShooters.Ship;
 
-public class ShipCrew implements Upgradable{
+public class ShipCrew extends Upgradable{
     double reloadTime;
-    double shieldRenewalTime;
+    final double barrierRenewalTime = 0.2;
+    double activeBarrierRenewalValue;
+    double passiveBarrierRenewalValue;
+
+    public ShipCrew(int level){
+        this.level = level;
+        recalculateValues();
+    }
+
+    private void recalculateValues(){
+        reloadTime = 1 - 0.05 * level;
+        activeBarrierRenewalValue = 20 * level;
+        passiveBarrierRenewalValue = 5 * level;
+    }
 
     @Override
     public void levelUp() {
-
+        level++;
+        recalculateValues();
     }
 }

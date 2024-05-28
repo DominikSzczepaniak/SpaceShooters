@@ -1,8 +1,8 @@
 package SpaceShooters.Ship;
 
-public interface Upgradable {
+public abstract class Upgradable {
     int level = 0;
     int cost = 0;
-    void levelUp();
+    abstract void levelUp();
 
 }
