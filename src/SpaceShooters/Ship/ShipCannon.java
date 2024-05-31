@@ -10,13 +10,14 @@ public class ShipCannon extends Upgradable{
 
     }
 
-    private void recalculateValues(){
+    @Override
+    public void recalculateValues(){
         shotDamage = 100 * level;
         shotSpeed = 200 + 5*level;
     }
-    @Override
-    public void levelUp() {
-        level++;
-        recalculateValues();
-    }
+//    @Override
+//    public void levelUp() {
+//        level++;
+//        recalculateValues();
+//    }
 }

@@ -4,7 +4,7 @@ import SpaceShooters.Ship.Ship;
 
 public class Shot {
     public static final int ENEMY_Y = 800;
-    public static final int PLAYER_Y = 0;
+    public static final int PLAYER_Y = 200;
     double flySpeed;
     private final int damage;
     boolean owner; // 0 - player 1 - bot

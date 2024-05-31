@@ -14,15 +14,16 @@ public class ShipShield extends Upgradable{
         currentActiveBarrierHp = activeBarrierHp;
     }
 
-    private void recalculateValues(){
+    @Override
+    public void recalculateValues(){
         hpBonus = 10 * level;
         passiveBarrierHp = 20 * level;
         activeBarrierHp = 80 * level;
     }
 
-    @Override
-    public void levelUp() {
-        level++;
-        recalculateValues();
-    }
+//    @Override
+//    public void levelUp() {
+//        level++;
+//        recalculateValues();
+//    }
 }

@@ -11,15 +11,16 @@ public class ShipCrew extends Upgradable{
         recalculateValues();
     }
 
-    private void recalculateValues(){
+    @Override
+    public void recalculateValues(){
         reloadTime = 1 - 0.05 * level;
         activeBarrierRenewalValue = 20 * level;
         passiveBarrierRenewalValue = 5 * level;
     }
 
-    @Override
-    public void levelUp() {
-        level++;
-        recalculateValues();
-    }
+//    @Override
+//    public void levelUp() {
+//        level++;
+//        recalculateValues();
+//    }
 }
