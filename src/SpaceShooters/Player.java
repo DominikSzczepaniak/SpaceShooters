@@ -1,5 +1,6 @@
 package SpaceShooters;
 
+import SpaceShooters.GameMode.GameMode;
 import SpaceShooters.Ship.PlayerShipData;
 import SpaceShooters.Ship.Ship;
 import SpaceShooters.Ship.ShipFactory;
@@ -39,7 +40,7 @@ public class Player {
 
     }
 
-    void createPlayerShip(){
-        playerShip = ShipFactory.createPlayerShip(shipData);
+    void createPlayerShip(GameMode owner){
+        playerShip = ShipFactory.createPlayerShip(shipData, owner);
     }
 }

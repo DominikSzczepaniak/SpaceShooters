@@ -1,6 +1,7 @@
 package SpaceShooters.Database;
 
 import SpaceShooters.GameMode.GameMode;
+import SpaceShooters.GameMode.NormalMode;
 import SpaceShooters.Player;
 
 
@@ -12,11 +13,11 @@ public class LevelHandler {
         connection = con;
         instance = this;
     }
-    GameMode getNextNormalMode(Player p){
+    public GameMode getNextNormalMode(Player p){
         return null;
     }
 
-    GameMode getNextSurvivalMode(Player p){
+    public GameMode getNextSurvivalMode(Player p){
         return null;
     }
 
@@ -31,6 +32,12 @@ public class LevelHandler {
         throw new Exception("LevelHandler instance does not exist");
     }
 
+    public void saveNormalMode(NormalMode game){
 
+    }
+
+    public GameMode getNormalMode(int level){
+        return null;
+    }
 
 }

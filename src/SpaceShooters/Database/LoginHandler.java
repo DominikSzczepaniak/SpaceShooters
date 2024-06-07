@@ -32,4 +32,8 @@ public class LoginHandler {
         LoginHandler.instance = loginHandler;
         return loginHandler;
     }
+
+    public boolean playerExists(String name){
+        return true;
+    }
 }

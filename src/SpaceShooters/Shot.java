@@ -11,10 +11,11 @@ public class Shot {
     private final int x;
     private int y;
 
-    public Shot(int damage, int x, int y) {
+    public Shot(int damage, int x, int y, boolean owner) {
         this.damage = damage;
         this.x = x;
         this.y = y;
+        this.owner = owner;
     }
 
     public void updatePosition(Ship[] shipList, Ship playerShip){

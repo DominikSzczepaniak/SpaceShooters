@@ -15,16 +15,22 @@ public class GameWindow extends JFrame {
     JPanel mainPanel;
     Game game;
     Player player;
-    void login(){
 
-    }
-
-    void run(){
-
+    void run() throws Exception{
+        if(player == null){
+            LoginMenu loginMenu = new LoginMenu();
+            loginMenu.setVisible(true);
+            mainPanel = loginMenu;
+        }
+        else{
+            int todo;
+        }
     }
 
     public GameWindow(){
-        run();
+        try {
+            run();
+        }catch (Exception ignored){}
     }
 
     public static void main(String[] args){
