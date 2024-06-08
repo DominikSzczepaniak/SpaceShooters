@@ -1,6 +1,7 @@
 package SpaceShooters.GameMode;
 
 import SpaceShooters.Game;
+import SpaceShooters.GameObserver;
 import SpaceShooters.Ship.Ship;
 import SpaceShooters.Ship.ShipFactory;
 
@@ -13,8 +14,8 @@ public class NormalMode extends GameMode{
     int currentStage;
     private Game owner;
 
-    public NormalMode(int level, int experienceAward, int moneyAward, Game owner) {
-        super(level, experienceAward, moneyAward, owner);
+    public NormalMode(int level, int experienceAward, int moneyAward, GameObserver observer) {
+        super(level, experienceAward, moneyAward, observer);
         currentStage = 1;
         lastStage = Math.floorDiv(level, 7) + 1;
         enemies = new ArrayList<>(lastStage+1);

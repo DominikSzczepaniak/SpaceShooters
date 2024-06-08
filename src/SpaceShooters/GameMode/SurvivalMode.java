@@ -1,6 +1,7 @@
 package SpaceShooters.GameMode;
 
 import SpaceShooters.Game;
+import SpaceShooters.GameObserver;
 import SpaceShooters.Ship.Ship;
 import SpaceShooters.Ship.ShipFactory;
 
@@ -14,8 +15,8 @@ public class SurvivalMode extends GameMode{
     private double additionalEnemiesPerLevel;
     private double levelBoostPerStage;
     private double enemyLevel;
-    public SurvivalMode(int level, int experienceAward, int moneyAward, double additionalEnemiesPerLevel, double levelBoostPerStage, Game owner) {
-        super(level, experienceAward, moneyAward, owner);
+    public SurvivalMode(int level, int experienceAward, int moneyAward, double additionalEnemiesPerLevel, double levelBoostPerStage, GameObserver observer) {
+        super(level, experienceAward, moneyAward, observer);
         this.stage = 1;
         enemyLevel = max(level / 3 - 2, 1);
         List<Ship> cur = new ArrayList<>();

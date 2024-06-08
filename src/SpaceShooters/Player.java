@@ -40,7 +40,7 @@ public class Player {
 
     }
 
-    void createPlayerShip(GameMode owner){
-        playerShip = ShipFactory.createPlayerShip(shipData, owner);
+    void createPlayerShip(){
+        playerShip = ShipFactory.createPlayerShip(shipData);
     }
 }

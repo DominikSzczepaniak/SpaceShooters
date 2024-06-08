@@ -25,7 +25,7 @@ public class Shot {
                 int minShipx = ship.getX() - ship.getWidth();
                 int maxShipx = ship.getX() + ship.getWidth();
                 if(minShipx <= x && x <= maxShipx){
-                    ship.ReceiveDamage(this);
+                    ship.receiveDamage(this);
                 }
             }
         }
@@ -33,7 +33,7 @@ public class Shot {
             int minShipx = playerShip.getX() - playerShip.getWidth();
             int maxShipx = playerShip.getX() + playerShip.getWidth();
             if(minShipx <= x && x <= maxShipx){
-                playerShip.ReceiveDamage(this);
+                playerShip.receiveDamage(this);
             }
         }
     }
