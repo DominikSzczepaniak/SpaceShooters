@@ -6,41 +6,70 @@ import SpaceShooters.Ship.Ship;
 import SpaceShooters.Ship.ShipFactory;
 
 public class Player {
-    //we want to keep levels of each crew, cannon, shield and ship so we can just recreate it with factory
-    int level;
-    int normalModeLevel;
-    PlayerShipData shipData;
-    double experience;
-    double money;
-    double moneyMultiplier;
-    Ship playerShip;
-    public Player(int level, int normalModeLevel, PlayerShipData shipData, double experience, double money){
+    private int level;
+    private int normalModeLevel;
+    private PlayerShipData shipData;
+    private double experience;
+    private double money;
+    private double moneyMultiplier;
+    private Ship playerShip;
+    private String username;
+
+    public Player(int level, int normalModeLevel, PlayerShipData shipData, double experience, double money) {
         this.level = level;
         this.normalModeLevel = normalModeLevel;
         this.shipData = shipData;
         this.experience = experience;
         this.money = money;
-        moneyMultiplier = Math.pow(1.014, level);
+        this.moneyMultiplier = Math.pow(1.014, level);
         createPlayerShip();
     }
 
-    void upgradeCrew(){
-
+    public String getUsername() {
+        return username;
     }
 
-    void upgradeCannon(){
-
+    public int getLevel() {
+        return level;
     }
 
-    void upgradeShield(){
-
+    public int getNormalModeLevel() {
+        return normalModeLevel;
     }
 
-    void ReceiveExperience(int experience){
-
+    public double getExperience() {
+        return experience;
     }
 
-    void createPlayerShip(){
+    public double getMoney() {
+        return money;
+    }
+
+    public PlayerShipData getShipData() {
+        return shipData;
+    }
+
+    public Ship getPlayerShip(){
+        return playerShip;
+    }
+
+    public void upgradeCrew() {
+        // Implementacja
+    }
+
+    public void upgradeCannon() {
+        // Implementacja
+    }
+
+    public void upgradeShield() {
+        // Implementacja
+    }
+
+    public void receiveExperience(int experience) {
+        // Implementacja
+    }
+
+    private void createPlayerShip() {
         playerShip = ShipFactory.createPlayerShip(shipData);
     }
 }

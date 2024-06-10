@@ -198,4 +198,8 @@ public class Ship {
     public Instant getLastShot() {
         return lastShot;
     }
+
+    public int getBaseHp() {
+        return baseHp;
+    }
 }

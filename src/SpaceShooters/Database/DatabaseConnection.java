@@ -1,25 +1,43 @@
 package SpaceShooters.Database;
-import java.sql.Connection;
-import java.sql.DriverManager;
+
+import org.json.JSONObject;
+import org.json.JSONArray;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class DatabaseConnection {
-    public Connection connection;
-    static DatabaseConnection instance = null;
-    public DatabaseConnection(Connection con) throws Exception {
-        if(instance == null){
-            connection = con;
-            instance = this;
-        }
-        else{
-            throw new Exception("Cant use two databases at the same time");
+    private JSONObject database;
+    private static DatabaseConnection instance = null;
+    private static final String FILE_PATH = "database.json";
+
+    public DatabaseConnection() throws Exception {
+        try {
+            String content = new String(Files.readAllBytes(Paths.get(FILE_PATH)));
+            database = new JSONObject(content);
+        } catch (IOException e) {
+            database = new JSONObject();
+            database.put("players", new JSONObject());
         }
     }
 
-    static public DatabaseConnection getInstance() throws Exception {
-        if(instance != null) {
-            return instance;
+    public static DatabaseConnection getInstance() throws Exception {
+        if (instance == null) {
+            instance = new DatabaseConnection();
         }
-        throw new Exception("DatabaseConnection instance does not exist");
+        return instance;
     }
 
+    public JSONObject getDatabase() {
+        return database;
+    }
+
+    public void saveDatabase() throws Exception {
+        try (FileWriter file = new FileWriter(FILE_PATH)) {
+            file.write(database.toString(4)); // Pretty print with an indentation of 4 spaces
+            file.flush();
+        }
+    }
 }

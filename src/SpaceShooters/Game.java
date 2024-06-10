@@ -9,9 +9,9 @@ public class Game {
     GameMode gameType;
     Player player;
     List<Shot> shotList = new ArrayList<>();
-    GameWindow owner;
+    MainWindow owner;
 
-    Game(Player p, GameMode mode, GameWindow owner){
+    Game(Player p, GameMode mode, MainWindow owner){
         this.player = p;
         this.gameType = mode;
         this.owner = owner;

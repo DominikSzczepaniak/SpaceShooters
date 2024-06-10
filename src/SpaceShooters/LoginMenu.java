@@ -8,14 +8,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginMenu extends JPanel {
-    LoginHandler loginHandler;
-    JPanel mainPanel = new JPanel();
+    private LoginHandler loginHandler;
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton;
     private Player player;
 
-    public LoginMenu() throws Exception{
+    public LoginMenu() throws Exception {
         loginHandler = LoginHandler.getInstance();
         setupUI();
     }
@@ -36,21 +35,23 @@ public class LoginMenu extends JPanel {
                         // Zalogowano pomyślnie
                         firePropertyChange("player", null, player);
                     } else {
-                        if(!loginHandler.playerExists(usernameField.getText())){
-                            register(usernameField.getText(), new String(passwordField.getPassword()));
-                            login(usernameField.getText(), new String(passwordField.getPassword()));
-                        }
-                        else{
-                            JOptionPane.showMessageDialog(LoginMenu.this,
-                                    "Invalid username or password",
-                                    "Login Error",
-                                    JOptionPane.ERROR_MESSAGE);
+                        if (!loginHandler.playerExists(usernameField.getText())) {
+                            player = register(usernameField.getText(), new String(passwordField.getPassword()));
+                            if (player != null) {
+                                // Rejestracja i logowanie zakończone pomyślnie
+                                firePropertyChange("player", null, player);
+                            } else {
+                                showErrorMessage("Registration failed. Please try again.");
+                            }
+                        } else {
+                            showErrorMessage("Invalid username or password");
                             usernameField.setText("");
                             passwordField.setText("");
                         }
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
+                    showErrorMessage("An error occurred. Please try again.");
                 }
             }
         });
@@ -63,12 +64,16 @@ public class LoginMenu extends JPanel {
         add(loginButton);
     }
 
-    Player login(String username, String password) throws Exception{
+    private Player login(String username, String password) throws Exception {
         return loginHandler.validateLogin(username, password);
     }
 
-    Player register(String username, String password) throws Exception{
+    private Player register(String username, String password) throws Exception {
         return loginHandler.registerPlayer(username, password);
+    }
+
+    private void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Login Error", JOptionPane.ERROR_MESSAGE);
     }
 
     public Player getPlayer() {
