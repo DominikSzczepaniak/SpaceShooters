@@ -1,23 +1,18 @@
 package SpaceShooters.Ship;
 
-public class ShipCannon extends Upgradable{
+public class ShipCannon extends Upgradable {
     int shotDamage;
-    int shotSpeed;
+    double shotSpeed;
 
-    public ShipCannon(int level){
+    public ShipCannon(int level) {
         this.level = level;
         recalculateValues();
 
     }
 
     @Override
-    public void recalculateValues(){
+    public void recalculateValues() {
         shotDamage = 100 * level;
-        shotSpeed = 200 + 5*level;
+        shotSpeed = 1 + 0.2 * level;
     }
-//    @Override
-//    public void levelUp() {
-//        level++;
-//        recalculateValues();
-//    }
 }

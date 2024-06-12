@@ -19,7 +19,8 @@ public class ShipFactory {
         return new Ship(Shot.ENEMY_Y, SHIPWIDTH, level, true, observer);
     }
 
-    public static Ship createEnemyShip(int level){
-        return new Ship(Shot.ENEMY_Y, SHIPWIDTH, level, true);
+    public static Ship createEnemyShip(int level, GameMode mode){
+        ShipObserver observer = new ShipObserver(mode);
+        return new Ship(Shot.ENEMY_Y, SHIPWIDTH, level, true, observer);
     }
 }

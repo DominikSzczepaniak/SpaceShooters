@@ -1,12 +1,14 @@
 package SpaceShooters.Ship;
 
+import SpaceShooters.GameFrame;
 import SpaceShooters.GameMode.GameMode;
 import SpaceShooters.GameMode.ShipObserver;
 import SpaceShooters.Shot;
 
 import java.time.Duration;
 import java.time.Instant;
-
+import java.util.Random;
+import java.util.random.RandomGenerator;
 public class Ship {
     private final ShipCannon cannon;
     private final ShipCrew crew;
@@ -15,7 +17,7 @@ public class Ship {
     int baseHp;
     int level;
     int currentHp;
-    private int x;
+    private int x = RandomGenerator.getDefault().nextInt(0, GameFrame.MAXWIDTH);
     private final int y;
     private final int width;
     private Instant lastShot = Instant.now().minusMillis(10000); //making sure that last_shot is higher than any possible shot cooldown
@@ -23,6 +25,7 @@ public class Ship {
     public final boolean lookingDown;
     private ShipObserver shipObserver = null;
     private boolean playerShip = false;
+    int loopValue = 0;
 
     public Ship(int y, int width, int level, boolean lookingDown) {
         this.y = y;
@@ -31,7 +34,7 @@ public class Ship {
         crew = new ShipCrew(level);
         cannon = new ShipCannon(level);
         shield = new ShipShield(level);
-        baseHp = level * 50 + shield.hpBonus;
+        calculateBaseHp();
         currentHp = baseHp;
         this.lookingDown = lookingDown;
     }
@@ -44,7 +47,7 @@ public class Ship {
         crew = new ShipCrew(level);
         cannon = new ShipCannon(level);
         shield = new ShipShield(level);
-        baseHp = level * 50 + shield.hpBonus;
+        calculateBaseHp();
         currentHp = baseHp;
         this.lookingDown = lookingDown;
         shipObserver = observer;
@@ -57,7 +60,7 @@ public class Ship {
         crew = new ShipCrew(crewLevel);
         shield = new ShipShield(shieldLevel);
         cannon = new ShipCannon(cannonLevel);
-        baseHp = level * 50 + shield.hpBonus;
+        calculateBaseHp();
         currentHp = baseHp;
         this.lookingDown = lookingDown;
         this.shipObserver = observer;
@@ -71,52 +74,64 @@ public class Ship {
         crew = new ShipCrew(crewLevel);
         shield = new ShipShield(shieldLevel);
         cannon = new ShipCannon(cannonLevel);
-        baseHp = level * 50 + shield.hpBonus;
+        calculateBaseHp();
         currentHp = baseHp;
         this.lookingDown = lookingDown;
         this.playerShip = playerShip;
     }
 
-    void shoot(){
+    private void calculateBaseHp(){
+        baseHp = 200 + level * 50 + shield.hpBonus;
+    }
+
+    public void shoot(){
         Instant time_now = Instant.now();
         long cooldown_timer = Duration.between(lastShot, time_now).toMillis();
-        if(cooldown_timer >= crew.reloadTime){
+        if((double) cooldown_timer /1000 >= crew.reloadTime){
             lastShot = time_now;
-            Shot shot = new Shot(cannon.shotDamage, x, y, playerShip);
+            Shot shot = new Shot(cannon.shotDamage, x, y, cannon.shotSpeed, playerShip);
             shipObserver.shipShot(shot);
         }
     }
 
-    void toggleBarrierActivation(){
+    public void toggleBarrierActivation(){
         barrierActive = !barrierActive;
     }
 
     public void destroy(){
+        if(playerShip){
+            shipObserver.playerShipDestroyed();
+        }
+        shipObserver.shipDestroyed(this);
+    }
 
+    public void setupObserver(GameMode mode){
+        shipObserver = new ShipObserver(mode);
     }
 
     private int damageActiveBarrier(int damage){
-        if(damage > shield.currentActiveBarrierHp){
-            int remaining = damage - shield.currentActiveBarrierHp;
-            shield.currentActiveBarrierHp = 0;
+        if(damage > getActiveShieldHp()){
+            int remaining = damage - getActiveShieldHp();
+            setActiveBarrierHp(0);
             barrierActive = false;
             barrierDestroyed = Instant.now();
             return remaining;
         }
         else{
-            shield.currentActiveBarrierHp -=damage ;
+            setActiveBarrierHp(getActiveShieldHp() - damage);
             return 0;
         }
     }
 
     private int damagePassiveBarrier(int damage){
-        if(damage > shield.currentPassiveBarrierHp){
-            int remaining = damage - shield.currentPassiveBarrierHp;
-            shield.currentPassiveBarrierHp = 0;
+        if(damage > getPasiveShieldHp()){
+            int remaining = damage - getPasiveShieldHp();
+            System.out.println(remaining);
+            setPassiveBarrierHp(0);
             return remaining;
         }
         else{
-            shield.currentPassiveBarrierHp -= damage;
+            setPassiveBarrierHp(getPasiveShieldHp() - damage);
             return 0;
         }
     }
@@ -135,8 +150,36 @@ public class Ship {
             damageHp(damagePassiveBarrier(damageActiveBarrier(shot.getDamage())));
         }
         else{
-            int remaining = damagePassiveBarrier(shot.getDamage());
-            damageHp(remaining);
+            damageHp(damagePassiveBarrier(shot.getDamage()));
+        }
+    }
+
+    public void move(int dir){
+        int units = crew.movementSpeed;
+        if (dir == 0){
+            x -= units;
+        }
+        else{
+            x += units;
+        }
+    }
+
+    public void move(int dir, int units){
+        if (dir == 0){
+            x -= units;
+        }
+        else{
+            x += units;
+        }
+    }
+
+    public void calculateShield(){
+        loopValue++;
+        if(loopValue == 60){
+            setPassiveBarrierHp(Math.min(shield.maximumPassiveBarrierHp, getPasiveShieldHp() + Math.floorDiv(crew.getPassiveBarrierRenewalValue(), 4)));
+            setActiveBarrierHp(Math.min(shield.maximumActiveBarrierHp, getActiveShieldHp() + Math.floorDiv(crew.getActiveBarrierRenewalValue(), 4)));
+            currentHp = Math.min(currentHp + baseHp/10, baseHp);
+            loopValue=0;
         }
     }
 
@@ -168,16 +211,16 @@ public class Ship {
         return barrierDestroyed;
     }
 
-    public void upgradeCrew(){
-        crew.levelUp();
+    public void upgradeCrew(boolean natural){
+        crew.levelUp(natural);
     }
 
-    public void upgradeShield(){
-        shield.levelUp();
+    public void upgradeShield(boolean natural){
+        shield.levelUp(natural);
     }
 
-    public void upgradeCannon(){
-        cannon.levelUp();
+    public void upgradeCannon(boolean natural){
+        cannon.levelUp(natural);
     }
 
     public int getPasiveShieldHp(){
@@ -202,4 +245,29 @@ public class Ship {
     public int getBaseHp() {
         return baseHp;
     }
+
+    public int getCannonUpgradeCost(){
+        return cannon.cost;
+    }
+
+    public int getShieldUpgradeCost(){
+        return shield.cost;
+    }
+
+    public int getCrewUpgradeCost(){
+        return crew.cost;
+    }
+
+    public boolean isShielded(){
+        return barrierActive;
+    }
+
+    public int getCurrentHp() {
+        return currentHp;
+    }
+
+    public boolean getBarrierActive(){
+        return barrierActive;
+    }
 }
+

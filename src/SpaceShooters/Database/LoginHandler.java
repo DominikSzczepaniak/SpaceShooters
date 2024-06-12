@@ -2,6 +2,7 @@ package SpaceShooters.Database;
 
 import SpaceShooters.Player;
 import SpaceShooters.Ship.PlayerShipData;
+import SpaceShooters.Ship.Ship;
 import org.json.JSONObject;
 
 public class LoginHandler {
@@ -40,6 +41,7 @@ public class LoginHandler {
 
         if (!players.has(username)) {
             JSONObject newPlayer = new JSONObject();
+            newPlayer.put("username", username);
             newPlayer.put("password", password);
             newPlayer.put("level", 1);
             newPlayer.put("normalModeLevel", 0);
@@ -50,7 +52,7 @@ public class LoginHandler {
             players.put(username, newPlayer);
             connection.saveDatabase();
 
-            return new Player(1, 0, new PlayerShipData(), 0, 0);
+            return new Player(1, 0, new PlayerShipData(), 0, 0, username);
         }
         return null;
     }
@@ -76,23 +78,31 @@ public class LoginHandler {
     }
 
     private Player createPlayerFromJSON(JSONObject playerData) {
+        String username = playerData.getString("username");
         int level = playerData.getInt("level");
         int normalModeLevel = playerData.getInt("normalModeLevel");
-        double experience = playerData.getDouble("experience");
+        int experience = playerData.getInt("experience");
         double money = playerData.getDouble("money");
         PlayerShipData shipData = convertJSONToShipData(playerData.getJSONObject("shipData"));
 
-        return new Player(level, normalModeLevel, shipData, experience, money);
+        return new Player(level, normalModeLevel, shipData, experience, money, username);
     }
 
     private JSONObject convertShipDataToJSON(PlayerShipData shipData) {
         JSONObject json = new JSONObject();
-        // Convert shipData to JSON
+        json.put("crewLevel", shipData.getCrewLevel());
+        json.put("cannonLevel", shipData.getCannonLevel());
+        json.put("shieldLevel", shipData.getShieldLevel());
+        json.put("shipLevel", shipData.getShipLevel());
         return json;
     }
 
     private PlayerShipData convertJSONToShipData(JSONObject json) {
-        // Convert JSON to PlayerShipData
-        return new PlayerShipData();
+        PlayerShipData shipData = new PlayerShipData();
+        shipData.setCrewLevel(json.getInt("crewLevel"));
+        shipData.setCannonLevel(json.getInt("cannonLevel"));
+        shipData.setShieldLevel(json.getInt("shieldLevel"));
+        shipData.setShipLevel(json.getInt("shipLevel"));
+        return shipData;
     }
 }

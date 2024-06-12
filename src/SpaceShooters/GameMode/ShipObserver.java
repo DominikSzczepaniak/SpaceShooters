@@ -16,4 +16,16 @@ public class ShipObserver {
             gameMode.shipShot(shot);
         }
     }
+
+    public void shipDestroyed(Ship ship){
+        if(gameMode != null){
+            gameMode.shipDestroyed(ship);
+        }
+    }
+
+    public void playerShipDestroyed() {
+        if(gameMode != null){
+            gameMode.playerShipDestroyed();
+        }
+    }
 }

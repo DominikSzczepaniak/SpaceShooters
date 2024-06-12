@@ -5,10 +5,12 @@ public abstract class Upgradable {
     int cost = 50;
 
     abstract void recalculateValues();
-    void levelUp(){
+    void levelUp(boolean natural){
         level++;
         recalculateValues();
-        cost += 50 + 10*level; //TODO balance it
+        if(!natural){
+            cost += 50 + 10*level; //TODO balance it
+        }
     }
 
     public int getLevel() {

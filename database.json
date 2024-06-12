@@ -1,8 +1,14 @@
-{"players": {"maciek": {
-    "shipData": {},
-    "password": "król",
-    "money": 0,
-    "level": 1,
-    "normalModeLevel": 0,
-    "experience": 0
+{"players": {"admin": {
+    "shipData": {
+        "crewLevel": 5,
+        "cannonLevel": 26,
+        "shieldLevel": 4,
+        "shipLevel": 1
+    },
+    "password": "admin",
+    "money": 469,
+    "level": 4,
+    "normalModeLevel": 21,
+    "experience": 140,
+    "username": "admin"
 }}}

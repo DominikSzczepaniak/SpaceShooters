@@ -16,6 +16,7 @@ public class LoginMenu extends JPanel {
 
     public LoginMenu() throws Exception {
         loginHandler = LoginHandler.getInstance();
+
         setupUI();
     }
 
@@ -25,6 +26,11 @@ public class LoginMenu extends JPanel {
         JLabel passLabel = new JLabel("Password: ");
         usernameField = new JTextField();
         passwordField = new JPasswordField();
+        passwordField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                loginButton.doClick();
+            }
+        });
         loginButton = new JButton("Login/Register");
 
         loginButton.addActionListener(new ActionListener() {

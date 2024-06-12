@@ -2,8 +2,8 @@ package SpaceShooters.Ship;
 
 public class ShipShield extends Upgradable{
     int hpBonus;
-    int passiveBarrierHp;
-    int activeBarrierHp;
+    int maximumPassiveBarrierHp;
+    int maximumActiveBarrierHp;
     int currentPassiveBarrierHp;
     int currentActiveBarrierHp;
 
@@ -11,19 +11,14 @@ public class ShipShield extends Upgradable{
         this.level = level;
         recalculateValues();
         currentPassiveBarrierHp = 0;
-        currentActiveBarrierHp = activeBarrierHp;
+        currentActiveBarrierHp = maximumActiveBarrierHp;
     }
 
     @Override
     public void recalculateValues(){
         hpBonus = 10 * level;
-        passiveBarrierHp = 20 * level;
-        activeBarrierHp = 80 * level;
+        maximumPassiveBarrierHp = 20 * level;
+        maximumActiveBarrierHp = 80 * level;
     }
 
-//    @Override
-//    public void levelUp() {
-//        level++;
-//        recalculateValues();
-//    }
 }

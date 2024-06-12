@@ -1,33 +1,16 @@
 package SpaceShooters.GameMode;
 
-import SpaceShooters.Database.DatabaseConnection;
-import SpaceShooters.Database.LevelHandler;
 import SpaceShooters.Game;
 import SpaceShooters.GameObserver;
-import SpaceShooters.Player;
-import SpaceShooters.Ship.Ship;
 
 public class GameModeFactory {
-    LevelHandler levelHandler;
     public static GameMode createSurvivalMode(int level, Game owner){
         GameObserver gameObserver = new GameObserver(owner);
         return new SurvivalMode(level, level * 25, level * 25, level % 10, (double) level / 4, gameObserver);
     }
 
-    public static GameMode createNormalMode(int level, Game owner) throws Exception {
+    public static GameMode createNormalMode(int level, Game owner){
         GameObserver gameObserver = new GameObserver(owner);
-        NormalMode game = new NormalMode(level, level*100, level * 100, gameObserver);
-        LevelHandler.getInstance().saveNormalMode(game);
-        return game;
-    }
-
-    public static GameMode getNormalMode(int level) throws Exception {
-
-        return LevelHandler.getInstance().getNormalMode(level);
-    }
-
-    public static GameMode getNextNormalMode(Player p){
-
-        return null;
+        return new NormalMode(level, level*100, level * 100, gameObserver);
     }
 }

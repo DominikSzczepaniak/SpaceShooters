@@ -21,10 +21,8 @@ public abstract class GameMode {
         this.observer = observer;
     }
 
-    public void spawnEnemies(){
-        observer.spawnEnemies();
-    }
     public abstract void endGame();
+    public abstract void nextStage();
 
     public void shipShot(Shot shot){
         observer.shipShot(shot);
@@ -54,5 +52,15 @@ public abstract class GameMode {
         this.moneyAward = moneyAward;
     }
 
+    public List<Ship> getCurrentEnemies() {
+        return currentEnemies;
+    }
 
+    public void shipDestroyed(Ship ship){
+        currentEnemies.remove(ship);
+    }
+
+    public void playerShipDestroyed() {
+        observer.playerShipDestroyed();
+    }
 }

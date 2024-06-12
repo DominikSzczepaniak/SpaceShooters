@@ -10,7 +10,11 @@ public class GameObserver {
         game.ShipShot(shot);
     }
 
-    public void spawnEnemies(){
-        game.spawnEnemies();
+    public void playerShipDestroyed() {
+        game.playerShipDestroyed();
+    }
+
+    public void endGame(){
+        game.endGame();
     }
 }

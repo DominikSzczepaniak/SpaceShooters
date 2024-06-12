@@ -18,4 +18,36 @@ public class PlayerShipData {
     public static PlayerShipData GeneratePlayerShipData(Ship ship){
         return new PlayerShipData(ship);
     }
+
+    public int getCannonLevel() {
+        return cannonLevel;
+    }
+
+    public int getCrewLevel() {
+        return crewLevel;
+    }
+
+    public int getShieldLevel() {
+        return shieldLevel;
+    }
+
+    public int getShipLevel() {
+        return shipLevel;
+    }
+
+    public void setCrewLevel(int crewLevel) {
+        this.crewLevel = crewLevel;
+    }
+
+    public void setCannonLevel(int cannonLevel) {
+        this.cannonLevel = cannonLevel;
+    }
+
+    public void setShieldLevel(int shieldLevel) {
+        this.shieldLevel = shieldLevel;
+    }
+
+    public void setShipLevel(int shipLevel) {
+        this.shipLevel = shipLevel;
+    }
 }
