@@ -10,11 +10,17 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+/**
+ * Main window of the game application. Manages the login process, main menu, game modes, and shop.
+ */
 public class MainWindow extends JFrame {
     JPanel mainPanel;
     Game game;
     Player player;
 
+    /**
+     * Constructs a MainWindow instance.
+     */
     public MainWindow() {
         try {
             run();
@@ -35,6 +41,11 @@ public class MainWindow extends JFrame {
         }
     }
 
+    /**
+     * Constructs a MainWindow instance with a specified player.
+     *
+     * @param player The player to associate with this window.
+     */
     public MainWindow(Player player){
         this.player = player;
         try {
@@ -56,6 +67,10 @@ public class MainWindow extends JFrame {
         }
     }
 
+    /**
+     * Initializes the main window. If no player is logged in, displays the login menu.
+     * Otherwise, shows the main menu directly.
+     */
     void run() {
         if (player == null) {
             LoginMenu loginMenu = new LoginMenu();
@@ -77,6 +92,9 @@ public class MainWindow extends JFrame {
         }
     }
 
+    /**
+     * Displays the main menu for the player.
+     */
     void showMainMenu() {
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
@@ -94,9 +112,9 @@ public class MainWindow extends JFrame {
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(3, 1));
-        JButton normalModeButton = new JButton("Zagraj tryb normalny");
-        JButton survivalModeButton = new JButton("Zagraj tryb survival");
-        JButton shopButton = new JButton("Otworz sklep");
+        JButton normalModeButton = new JButton("Play Normal Mode");
+        JButton survivalModeButton = new JButton("Play Survival Mode");
+        JButton shopButton = new JButton("Open Shop");
 
         normalModeButton.addActionListener(e -> {
             int nextLevel = player.getNormalModeLevel() + 1;
@@ -128,11 +146,17 @@ public class MainWindow extends JFrame {
         pack();
     }
 
+    /**
+     * Starts the game by setting up the game frame.
+     */
     void gameStart(){
         game.setObserver(new GameFrame(game));
         this.dispose();
     }
 
+    /**
+     * Displays the shop interface where players can upgrade ship components.
+     */
     void showShop() {
         JPanel shopPanel = new JPanel();
         shopPanel.setLayout(new GridLayout(3, 1));
@@ -159,7 +183,9 @@ public class MainWindow extends JFrame {
             player.upgradeCrew();
             showMainMenu();
         });
+
         backButton.addActionListener(e -> showMainMenu());
+
         shopPanel.add(backButton);
         shopPanel.add(currentMoneyLabel);
         shopPanel.add(upgradeCannonLabel);
@@ -177,12 +203,22 @@ public class MainWindow extends JFrame {
         pack();
     }
 
+    /**
+     * Saves player data when the window is closing.
+     *
+     * @throws Exception If an error occurs while saving player data.
+     */
     private void onClose() throws Exception {
         if(player != null){
             LoginHandler.getInstance().savePlayerData(player);
         }
     }
 
+    /**
+     * Entry point of the application. Starts the game application.
+     *
+     * @param args Command-line arguments (not used).
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {

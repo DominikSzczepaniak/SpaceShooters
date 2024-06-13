@@ -12,6 +12,10 @@ import java.awt.event.KeyListener;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * GameFrame class represents the main game window where the gameplay occurs.
+ * It displays the player ship, enemies, shots, and handles user input.
+ */
 public class GameFrame extends JFrame implements ActionListener, KeyListener {
     public final static int MAXWIDTH = 1200;
     private final Timer timer;
@@ -22,6 +26,11 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
     private final JLabel hpLabel;
     private final JLabel shieldLabel;
 
+    /**
+     * Constructs a GameFrame instance.
+     *
+     * @param game The Game instance associated with this frame.
+     */
     public GameFrame(Game game) {
         this.game = game;
         this.player = game.getPlayer();
@@ -66,6 +75,9 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
         timer.start();
     }
 
+    /**
+     * Checks if the game should end (no more enemies). If so, proceeds to the next stage or ends the game.
+     */
     private void checkEndGame(){
         if(enemies.size() == 0){
             game.getGameMode().nextStage();
@@ -73,7 +85,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
                 player.receiveExperience(game.getGameMode().getExperienceAward());
                 player.receiveMoney(game.getGameMode().getMoneyAward());
             }
-            game.shotList.clear();
+            game.getShotList().clear();
             try{
                 enemies = game.getGameMode().getCurrentEnemies();
             }
@@ -83,12 +95,22 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
         }
     }
 
+    /**
+     * Draws the game components on the panel: player ship, enemies, and shots.
+     *
+     * @param g The Graphics object used for drawing.
+     */
     private void drawGame(Graphics g) {
         drawPlayer(g);
         drawEnemies(g);
         drawShots(g);
     }
 
+    /**
+     * Draws the player ship on the panel.
+     *
+     * @param g The Graphics object used for drawing.
+     */
     private void drawPlayer(Graphics g) {
         Ship playerShip = player.getShip();
         if(player.getPlayerShip().isShielded()){
@@ -100,6 +122,11 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
         g.fillRect(playerShip.getX(), playerShip.getY(), playerShip.getWidth(), 10);
     }
 
+    /**
+     * Draws the enemies on the panel.
+     *
+     * @param g The Graphics object used for drawing.
+     */
     private void drawEnemies(Graphics g) {
         g.setColor(Color.RED);
         for (Ship enemy : enemies) {
@@ -107,6 +134,11 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
         }
     }
 
+    /**
+     * Draws the shots fired by both player and enemies on the panel.
+     *
+     * @param g The Graphics object used for drawing.
+     */
     private void drawShots(Graphics g){
         g.setColor(Color.YELLOW);
         for(Shot shot : game.getShotList()){
@@ -114,18 +146,29 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
         }
     }
 
+    /**
+     * Makes enemies perform random movements.
+     */
     private void makeRandomMoveEnemy(){
         for(Ship enemy : enemies){
             enemy.move((int)(Math.random() * 2), 1);
         }
     }
 
+    /**
+     * Makes enemies attempt to shoot.
+     */
     private void tryShootEnemy(){
         for(Ship enemy : enemies){
             enemy.shoot();
         }
     }
 
+    /**
+     * Updates game state and components on each timer tick.
+     *
+     * @param e The ActionEvent associated with this action.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         player.getPlayerShip().calculateShield();
@@ -144,11 +187,21 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
         gamePanel.repaint();
     }
 
+    /**
+     * Handles key typed event (not used in this implementation).
+     *
+     * @param e The KeyEvent associated with this event.
+     */
     @Override
     public void keyTyped(KeyEvent e) {
         // Not used
     }
 
+    /**
+     * Handles key pressed event for player controls (movement, shooting, toggling shield).
+     *
+     * @param e The KeyEvent associated with this event.
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
@@ -166,11 +219,19 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
         }
     }
 
+    /**
+     * Handles key released event (not used in this implementation).
+     *
+     * @param e The KeyEvent associated with this event.
+     */
     @Override
     public void keyReleased(KeyEvent e) {
         // Not used
     }
 
+    /**
+     * Ends the game by disposing the current frame and returning to the main menu.
+     */
     public void gameEnd() {
         this.dispose();
         new MainWindow(player);
