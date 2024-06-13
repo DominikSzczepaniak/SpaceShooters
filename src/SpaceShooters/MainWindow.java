@@ -1,21 +1,16 @@
 package SpaceShooters;
 
-import SpaceShooters.Database.DatabaseConnection;
 import SpaceShooters.Database.LoginHandler;
-import SpaceShooters.GameMode.GameMode;
 import SpaceShooters.GameMode.GameModeFactory;
 import SpaceShooters.GameMode.NormalMode;
 import SpaceShooters.GameMode.SurvivalMode;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class MainWindow extends JFrame {
-    JFrame mainWindow;
     JPanel mainPanel;
     Game game;
     Player player;
@@ -61,7 +56,7 @@ public class MainWindow extends JFrame {
         }
     }
 
-    void run() throws Exception {
+    void run() {
         if (player == null) {
             LoginMenu loginMenu = new LoginMenu();
             loginMenu.addPropertyChangeListener("player", evt -> {
@@ -103,32 +98,24 @@ public class MainWindow extends JFrame {
         JButton survivalModeButton = new JButton("Zagraj tryb survival");
         JButton shopButton = new JButton("Otworz sklep");
 
-        normalModeButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int nextLevel = player.getNormalModeLevel() + 1;
-                game = new Game(player, MainWindow.this);
-                NormalMode nextLevelMode = (NormalMode) GameModeFactory.createNormalMode(nextLevel, game);
-                game.setupGameType(nextLevelMode);
-                player.getPlayerShip().setupObserver(nextLevelMode);
-                gameStart();
-            }
+        normalModeButton.addActionListener(e -> {
+            int nextLevel = player.getNormalModeLevel() + 1;
+            game = new Game(player, MainWindow.this);
+            NormalMode nextLevelMode = (NormalMode) GameModeFactory.createNormalMode(nextLevel, game);
+            game.setupGameType(nextLevelMode);
+            player.getPlayerShip().setupObserver(nextLevelMode);
+            gameStart();
         });
 
-        survivalModeButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                game = new Game(player, MainWindow.this);
-                SurvivalMode survivalGame = (SurvivalMode) GameModeFactory.createSurvivalMode(player.getLevel(), game);
-                game.setupGameType(survivalGame);
-                player.getPlayerShip().setupObserver(survivalGame);
-                gameStart();
-            }
+        survivalModeButton.addActionListener(e -> {
+            game = new Game(player, MainWindow.this);
+            SurvivalMode survivalGame = (SurvivalMode) GameModeFactory.createSurvivalMode(player.getLevel(), game);
+            game.setupGameType(survivalGame);
+            player.getPlayerShip().setupObserver(survivalGame);
+            gameStart();
         });
 
-        shopButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                showShop();
-            }
-        });
+        shopButton.addActionListener(e -> showShop());
 
         buttonPanel.add(normalModeButton);
         buttonPanel.add(survivalModeButton);
@@ -149,7 +136,7 @@ public class MainWindow extends JFrame {
     void showShop() {
         JPanel shopPanel = new JPanel();
         shopPanel.setLayout(new GridLayout(3, 1));
-        JLabel currentMoneyLabel = new JLabel("Current money: " + String.valueOf(player.getMoney()));
+        JLabel currentMoneyLabel = new JLabel("Current money: " + player.getMoney());
         JLabel upgradeCannonLabel = new JLabel("Upgrade Cannon Cost: " + player.getPlayerShip().getCannonUpgradeCost());
         JLabel upgradeShieldLabel = new JLabel("Upgrade Shield Cost: " + player.getPlayerShip().getShieldUpgradeCost());
         JLabel upgradeCrewLabel = new JLabel("Upgrade Crew Cost: " + player.getPlayerShip().getCrewUpgradeCost());
@@ -158,31 +145,21 @@ public class MainWindow extends JFrame {
         JButton upgradeCrewButton = new JButton("Upgrade Crew");
         JButton backButton = new JButton("Back");
 
-        upgradeCannonButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                player.upgradeCannon();
-                showMainMenu();
-            }
+        upgradeCannonButton.addActionListener(e -> {
+            player.upgradeCannon();
+            showMainMenu();
         });
 
-        upgradeShieldButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                player.upgradeShield();
-                showMainMenu();
-            }
+        upgradeShieldButton.addActionListener(e -> {
+            player.upgradeShield();
+            showMainMenu();
         });
 
-        upgradeCrewButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                player.upgradeCrew();
-                showMainMenu();
-            }
+        upgradeCrewButton.addActionListener(e -> {
+            player.upgradeCrew();
+            showMainMenu();
         });
-        backButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                showMainMenu();
-            }
-        });
+        backButton.addActionListener(e -> showMainMenu());
         shopPanel.add(backButton);
         shopPanel.add(currentMoneyLabel);
         shopPanel.add(upgradeCannonLabel);

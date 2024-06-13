@@ -1,6 +1,5 @@
 package SpaceShooters.GameMode;
 
-import SpaceShooters.Game;
 import SpaceShooters.GameObserver;
 import SpaceShooters.Ship.Ship;
 import SpaceShooters.Ship.ShipFactory;
@@ -12,17 +11,15 @@ import static java.lang.Math.max;
 
 public class SurvivalMode extends GameMode{
     private int stage;
-    private double additionalEnemiesPerLevel;
-    private double levelBoostPerStage;
+    private final double levelBoostPerStage;
     private double enemyLevel;
-    public SurvivalMode(int level, int experienceAward, int moneyAward, double additionalEnemiesPerLevel, double levelBoostPerStage, GameObserver observer) {
+    public SurvivalMode(int level, int experienceAward, int moneyAward, double levelBoostPerStage, GameObserver observer) {
         super(level, experienceAward, moneyAward, observer);
         this.stage = 1;
         enemyLevel = max(level / 3 - 2, 1);
         List<Ship> cur = new ArrayList<>();
         cur.add(ShipFactory.createEnemyShip((int) Math.floor(enemyLevel), this));
         currentEnemies = cur;
-        this.additionalEnemiesPerLevel = additionalEnemiesPerLevel;
         this.levelBoostPerStage = levelBoostPerStage;
     }
 
@@ -36,21 +33,5 @@ public class SurvivalMode extends GameMode{
         currentEnemies = cur;
     }
 
-    @Override
-    public void endGame() {
-        // Logic to end the game
-    }
-
-    public int getStage() {
-        return stage;
-    }
-
-    public List<Ship> getCurrentEnemies() {
-        return currentEnemies;
-    }
-
-    public void setCurrentEnemies(List<Ship> currentEnemies) {
-        this.currentEnemies = currentEnemies;
-    }
 
 }

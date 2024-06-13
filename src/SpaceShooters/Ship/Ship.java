@@ -7,7 +7,6 @@ import SpaceShooters.Shot;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Random;
 import java.util.random.RandomGenerator;
 public class Ship {
     private final ShipCannon cannon;
@@ -95,6 +94,9 @@ public class Ship {
     }
 
     public void toggleBarrierActivation(){
+        if(getActiveShieldHp() == 0){
+            return;
+        }
         barrierActive = !barrierActive;
     }
 
@@ -177,7 +179,9 @@ public class Ship {
         loopValue++;
         if(loopValue == 60){
             setPassiveBarrierHp(Math.min(shield.maximumPassiveBarrierHp, getPasiveShieldHp() + Math.floorDiv(crew.getPassiveBarrierRenewalValue(), 4)));
-            setActiveBarrierHp(Math.min(shield.maximumActiveBarrierHp, getActiveShieldHp() + Math.floorDiv(crew.getActiveBarrierRenewalValue(), 4)));
+            if(barrierDestroyed.plusSeconds(3).isBefore(Instant.now())){
+                setActiveBarrierHp(Math.min(shield.maximumActiveBarrierHp, getActiveShieldHp() + Math.floorDiv(crew.getActiveBarrierRenewalValue(), 4)));
+            }
             currentHp = Math.min(currentHp + baseHp/10, baseHp);
             loopValue=0;
         }
@@ -205,10 +209,6 @@ public class Ship {
 
     public int getCannonLevel(){
         return cannon.getLevel();
-    }
-
-    public Instant getBarrierDestroyed(){
-        return barrierDestroyed;
     }
 
     public void upgradeCrew(boolean natural){

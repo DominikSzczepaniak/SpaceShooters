@@ -1,9 +1,7 @@
 package SpaceShooters;
 
-import SpaceShooters.GameMode.GameEndsObserver;
 import SpaceShooters.GameMode.SurvivalMode;
 import SpaceShooters.Ship.Ship;
-import SpaceShooters.Ship.ShipFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,13 +14,13 @@ import java.util.List;
 
 public class GameFrame extends JFrame implements ActionListener, KeyListener {
     public final static int MAXWIDTH = 1200;
-    private Timer timer;
-    private Game game;
-    private Player player;
+    private final Timer timer;
+    private final Game game;
+    private final Player player;
     private List<Ship> enemies;
-    private JPanel gamePanel;
-    private JLabel hpLabel;
-    private JLabel shieldLabel;
+    private final JPanel gamePanel;
+    private final JLabel hpLabel;
+    private final JLabel shieldLabel;
 
     public GameFrame(Game game) {
         this.game = game;
@@ -72,8 +70,8 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
         if(enemies.size() == 0){
             game.getGameMode().nextStage();
             if(game.getGameMode() instanceof SurvivalMode){
-                player.receiveExperience(((SurvivalMode) game.getGameMode()).getExperienceAward());
-                player.receiveMoney(((SurvivalMode) game.getGameMode()).getMoneyAward());
+                player.receiveExperience(game.getGameMode().getExperienceAward());
+                player.receiveMoney(game.getGameMode().getMoneyAward());
             }
             game.shotList.clear();
             try{
@@ -134,21 +132,16 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
         checkEndGame();
         makeRandomMoveEnemy();
         tryShootEnemy();
-        updateGame();
         Iterator<Shot> iterator = game.getShotList().iterator();
         while (iterator.hasNext()) {
             Shot shot = iterator.next();
-            shot.updatePosition(game.getGameMode().getCurrentEnemies().toArray(new Ship[0]), player.getShip(), game, iterator);
+            shot.updatePosition(game.getGameMode().getCurrentEnemies().toArray(new Ship[0]), player.getShip(), iterator);
         }
 
         hpLabel.setText("HP: " + player.getShip().getCurrentHp());
         shieldLabel.setText("Shield: " + (!player.getShip().getBarrierActive() ? player.getShip().getPasiveShieldHp() : player.getShip().getActiveShieldHp()));
 
         gamePanel.repaint();
-    }
-
-    private void updateGame() {
-        game.update(); // Assuming there is a method to update the game state
     }
 
     @Override
@@ -179,10 +172,8 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
     }
 
     public void gameEnd() {
-        //runs infinite loop - keeps opening new windows
         this.dispose();
         new MainWindow(player);
         timer.stop();
-        return;
     }
 }

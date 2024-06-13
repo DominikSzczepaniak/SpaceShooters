@@ -1,6 +1,5 @@
 package SpaceShooters.GameMode;
 
-import SpaceShooters.Game;
 import SpaceShooters.GameObserver;
 import SpaceShooters.Ship.Ship;
 import SpaceShooters.Shot;
@@ -21,7 +20,6 @@ public abstract class GameMode {
         this.observer = observer;
     }
 
-    public abstract void endGame();
     public abstract void nextStage();
 
     public void shipShot(Shot shot){
@@ -40,16 +38,8 @@ public abstract class GameMode {
         return experienceAward;
     }
 
-    public void setExperienceAward(int experienceAward) {
-        this.experienceAward = experienceAward;
-    }
-
     public int getMoneyAward() {
         return moneyAward;
-    }
-
-    public void setMoneyAward(int moneyAward) {
-        this.moneyAward = moneyAward;
     }
 
     public List<Ship> getCurrentEnemies() {

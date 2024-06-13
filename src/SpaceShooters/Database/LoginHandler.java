@@ -2,25 +2,24 @@ package SpaceShooters.Database;
 
 import SpaceShooters.Player;
 import SpaceShooters.Ship.PlayerShipData;
-import SpaceShooters.Ship.Ship;
 import org.json.JSONObject;
 
 public class LoginHandler {
-    private DatabaseConnection connection;
+    private final DatabaseConnection connection;
     private static LoginHandler instance = null;
 
-    private LoginHandler() throws Exception {
+    private LoginHandler() {
         connection = DatabaseConnection.getInstance();
     }
 
-    public static LoginHandler getInstance() throws Exception {
+    public static LoginHandler getInstance() {
         if (instance == null) {
             instance = new LoginHandler();
         }
         return instance;
     }
 
-    public Player validateLogin(String username, String password) throws Exception {
+    public Player validateLogin(String username, String password) {
         JSONObject database = connection.getDatabase();
         JSONObject players = database.getJSONObject("players");
 
@@ -71,7 +70,7 @@ public class LoginHandler {
         connection.saveDatabase();
     }
 
-    public boolean playerExists(String name) throws Exception {
+    public boolean playerExists(String name) {
         JSONObject database = connection.getDatabase();
         JSONObject players = database.getJSONObject("players");
         return players.has(name);

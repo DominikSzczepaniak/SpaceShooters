@@ -15,9 +15,6 @@ public class PlayerShipData {
         shieldLevel = 1;
         shipLevel = 1;
     }
-    public static PlayerShipData GeneratePlayerShipData(Ship ship){
-        return new PlayerShipData(ship);
-    }
 
     public int getCannonLevel() {
         return cannonLevel;

@@ -6,14 +6,14 @@ import SpaceShooters.Ship.ShipFactory;
 
 public class Player {
     private int level;
-    private int normalModeLevel;
+    private final int normalModeLevel;
     private PlayerShipData shipData;
     private int experience;
     private double nextLevelExperience;
     private double money;
     private double moneyMultiplier;
     private Ship playerShip;
-    private String username;
+    private final String username;
 
     public Player(int level, int normalModeLevel, PlayerShipData shipData, int experience, double money, String username) {
         this.level = level;
@@ -82,7 +82,7 @@ public class Player {
             playerShip.upgradeCannon(true);
             playerShip.upgradeCrew(true);
             playerShip.upgradeShield(true);
-            this.experience -= nextLevelExperience;
+            this.experience -= (int) nextLevelExperience;
             level++;
             calculateLevelStats();
         }

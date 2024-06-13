@@ -1,6 +1,5 @@
 package SpaceShooters.GameMode;
 
-import SpaceShooters.Game;
 import SpaceShooters.GameObserver;
 import SpaceShooters.Ship.Ship;
 import SpaceShooters.Ship.ShipFactory;
@@ -22,19 +21,17 @@ public class NormalMode extends GameMode{
             enemies.add(new ArrayList<>());
         }
         for(int i = 1; i<=lastStage; i++){
+            List<Ship> cur = new ArrayList<>();
             if(i % 5 == 0){
-                List<Ship> cur = new ArrayList<>();
                 cur.add(ShipFactory.createEnemyShip((Math.floorDiv(level, 4) + 1) * (i/5 + 2), this));
-                enemies.add(i, cur); //boss
             }
             else{
                 //every level spawn 2 enemies more
-                List<Ship> cur = new ArrayList<>();
                 for(int j = 1; j<=i*2; j++){
                     cur.add(ShipFactory.createEnemyShip(Math.floorDiv(level, 4) + 1, this));
                 }
-                enemies.add(i, cur);
             }
+            enemies.add(i, cur); //boss
         }
         this.currentEnemies = enemies.get(currentStage);
     }
@@ -48,8 +45,4 @@ public class NormalMode extends GameMode{
         currentEnemies = enemies.get(currentStage);
     }
 
-    @Override
-    public void endGame() {
-
-    }
 }

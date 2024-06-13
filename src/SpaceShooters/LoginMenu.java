@@ -4,17 +4,15 @@ import SpaceShooters.Database.LoginHandler;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class LoginMenu extends JPanel {
-    private LoginHandler loginHandler;
+    private final LoginHandler loginHandler;
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton;
     private Player player;
 
-    public LoginMenu() throws Exception {
+    public LoginMenu() {
         loginHandler = LoginHandler.getInstance();
 
         setupUI();
@@ -26,39 +24,33 @@ public class LoginMenu extends JPanel {
         JLabel passLabel = new JLabel("Password: ");
         usernameField = new JTextField();
         passwordField = new JPasswordField();
-        passwordField.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                loginButton.doClick();
-            }
-        });
+        passwordField.addActionListener(e -> loginButton.doClick());
         loginButton = new JButton("Login/Register");
 
-        loginButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    player = login(usernameField.getText(), new String(passwordField.getPassword()));
-                    if (player != null) {
-                        // Zalogowano pomyślnie
-                        firePropertyChange("player", null, player);
-                    } else {
-                        if (!loginHandler.playerExists(usernameField.getText())) {
-                            player = register(usernameField.getText(), new String(passwordField.getPassword()));
-                            if (player != null) {
-                                // Rejestracja i logowanie zakończone pomyślnie
-                                firePropertyChange("player", null, player);
-                            } else {
-                                showErrorMessage("Registration failed. Please try again.");
-                            }
+        loginButton.addActionListener(e -> {
+            try {
+                player = login(usernameField.getText(), new String(passwordField.getPassword()));
+                if (player != null) {
+                    // Zalogowano pomyślnie
+                    firePropertyChange("player", null, player);
+                } else {
+                    if (!loginHandler.playerExists(usernameField.getText())) {
+                        player = register(usernameField.getText(), new String(passwordField.getPassword()));
+                        if (player != null) {
+                            // Rejestracja i logowanie zakończone pomyślnie
+                            firePropertyChange("player", null, player);
                         } else {
-                            showErrorMessage("Invalid username or password");
-                            usernameField.setText("");
-                            passwordField.setText("");
+                            showErrorMessage("Registration failed. Please try again.");
                         }
+                    } else {
+                        showErrorMessage("Invalid username or password");
+                        usernameField.setText("");
+                        passwordField.setText("");
                     }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    showErrorMessage("An error occurred. Please try again.");
                 }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                showErrorMessage("An error occurred. Please try again.");
             }
         });
 
@@ -70,7 +62,7 @@ public class LoginMenu extends JPanel {
         add(loginButton);
     }
 
-    private Player login(String username, String password) throws Exception {
+    private Player login(String username, String password) {
         return loginHandler.validateLogin(username, password);
     }
 
@@ -82,7 +74,4 @@ public class LoginMenu extends JPanel {
         JOptionPane.showMessageDialog(this, message, "Login Error", JOptionPane.ERROR_MESSAGE);
     }
 
-    public Player getPlayer() {
-        return player;
-    }
 }

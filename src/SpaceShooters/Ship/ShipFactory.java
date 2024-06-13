@@ -11,9 +11,6 @@ public class ShipFactory {
         return new Ship(Shot.PLAYER_Y, SHIPWIDTH, data.shipLevel, data.crewLevel, data.cannonLevel, data.shieldLevel, false, true);
     }
 
-    public static Ship createPlayerShip(PlayerShipData data, ShipObserver observer){
-        return new Ship(Shot.PLAYER_Y, SHIPWIDTH, data.shipLevel, data.crewLevel, data.cannonLevel, data.shieldLevel, false, observer, true);
-    }
 
     public static Ship createEnemyShip(int level, ShipObserver observer){
         return new Ship(Shot.ENEMY_Y, SHIPWIDTH, level, true, observer);

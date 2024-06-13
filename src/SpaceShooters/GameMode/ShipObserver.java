@@ -3,8 +3,6 @@ package SpaceShooters.GameMode;
 import SpaceShooters.Ship.Ship;
 import SpaceShooters.Shot;
 
-import java.util.List;
-
 public class ShipObserver {
     private final GameMode gameMode;
     public ShipObserver(GameMode mode){

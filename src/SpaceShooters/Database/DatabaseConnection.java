@@ -1,8 +1,7 @@
 package SpaceShooters.Database;
 
 import org.json.JSONObject;
-import org.json.JSONArray;
-import java.io.FileReader;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,7 +12,7 @@ public class DatabaseConnection {
     private static DatabaseConnection instance = null;
     private static final String FILE_PATH = "database.json";
 
-    public DatabaseConnection() throws Exception {
+    public DatabaseConnection() {
         try {
             String content = new String(Files.readAllBytes(Paths.get(FILE_PATH)));
             database = new JSONObject(content);
@@ -23,7 +22,7 @@ public class DatabaseConnection {
         }
     }
 
-    public static DatabaseConnection getInstance() throws Exception {
+    public static DatabaseConnection getInstance() {
         if (instance == null) {
             instance = new DatabaseConnection();
         }

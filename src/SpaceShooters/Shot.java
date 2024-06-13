@@ -22,8 +22,8 @@ public class Shot {
         this.owner = owner;
     }
 
-    public void updatePosition(Ship[] shipList, Ship playerShip, Game game, Iterator<Shot> iterator) {
-        y += (int) (flySpeed * (owner==true ? 1.0 : -1.0));
+    public void updatePosition(Ship[] shipList, Ship playerShip, Iterator<Shot> iterator) {
+        y += (int) (flySpeed * (owner ? 1.0 : -1.0));
         if (y >= ENEMY_Y && owner) {
             for (var ship : shipList) {
                 int minShipx = ship.getX() - ship.getWidth();

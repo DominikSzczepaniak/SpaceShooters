@@ -42,15 +42,15 @@ public class Game {
         return gameMode;
     }
 
-    public void update() {
-    }
-
     public List<Shot> getShotList() {
         return shotList;
     }
 
     public void setObserver(GameFrame gameFrame){
         gameEndsObserver = new GameEndsObserver(gameFrame);
+    }
+    public void setObserver(GameEndsObserver gameEndsObserver){
+        this.gameEndsObserver = gameEndsObserver;
     }
 
     public void playerShipDestroyed() {
